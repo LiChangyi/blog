@@ -1,0 +1,125 @@
+.article-item {
+  width: 33%;
+  float: left;
+  box-sizing: border-box;
+  padding: 20px;
+}
+.article-wrap {
+  box-shadow:0 0 20px rgba(0,0,0,.15);
+  width: 100%;
+}
+.article-cover {
+  height: 250px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  &:hover {
+    .article-cover-img {
+      transform: scale(1.2);
+    }
+    .layer {
+      display: block;
+    }
+  }
+}
+.article-time {
+  position: absolute;
+  top: 10px;
+  right: 10px;;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+  background-color: rgba(14,20,4,.4);
+  line-height: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  span {
+    display: block;
+  }
+  .day {
+    font-size: 16px;
+  }
+  .month {
+    font-size: 12px;
+    margin-top: 5px;
+  }
+}
+.draft {
+  position: absolute;
+  top: 15px;
+  left: 0px;
+}
+.draft-title {
+  padding: 5px 20px 5px 10px;
+  background-color: #62be93;
+  color: #fff;
+  // border: 1px solid #62be93;
+  border-radius: 0 17px 17px 0;
+}
+.article-cover-img {
+  height: 100%;
+  width: 100%;
+  transition: transform linear .4s;
+}
+.layer {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(14,20,4,.4);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: none;
+}
+.article-info {
+  padding: 10px;
+  font-size: 14px;
+  color: #666;
+}
+.article-title {
+  line-height: 24px;
+  font-size: 16px;
+  color:#242f35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.article-desc {
+  margin: 15px 0;
+  overflow: hidden;
+  line-height: 22px;
+  height: 44px;
+  word-break: break-all;
+  position: relative;
+  &::after {
+    content: "......";
+    background: #fff;
+    height: 22px;
+    padding: 0 5px;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+  }
+}
+.article-tags {
+  margin-bottom: 10px;
+  i {
+    display: inline-block;
+    padding-right: 5px;
+  }
+  span {
+    display: inline-block;
+    padding-right: 10px;
+    padding-top: 10px;
+    cursor: pointer;
+    vertical-align: bottom;
+    &:hover {
+      color: #000;
+    }
+  }
+}

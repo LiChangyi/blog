@@ -1,0 +1,38 @@
+.archives-page {
+  margin-bottom: 40px;
+}
+.arch-item-title {
+  position: relative;
+  color: #242f35;
+  padding-left: 16px;
+  margin: 30px auto 20px;
+  font-weight: 400;
+  height: 20px;
+  line-height: 20px;
+  font-size: 18px;
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 4px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #1a1818;
+    background: linear-gradient(to bottom,#1a1818 35%,#353030 100%) left center no-repeat;
+    background-size: 100%;
+  }
+}
+.arch-item-children {
+  padding-left: 20px;
+  font-size: 16px;
+}
+.arch-link {
+  &:hover .arch-children-descript{
+    color: #353030;
+  }
+}
+.arch-children-descript {
+  padding: 10px 0;
+  color: #666;
+}

@@ -1,0 +1,57 @@
+{
+    "extends": "airbnb",
+    "parser": "babel-eslint",
+    "env": {
+      "browser": true,
+      "node": true,
+      "mocha": true
+    },
+    "globals": {
+      "Babel": true,
+      "React": true
+    },
+    "plugins": [
+      "react"
+    ],
+    "rules": {
+      "global-require": "off",
+      "import/no-unresolved": "off",
+      "no-underscore-dangle": "off",
+      "no-new-func": "off",
+      "no-param-reassign": "off",
+      "react/prefer-stateless-function": "off",
+      "react/no-multi-comp": "off",
+      "react/jsx-no-bind": "off",
+      "react/jsx-indent": "off",
+      "react/jsx-first-prop-new-line": "off",
+      "react/jsx-filename-extension": "off",
+      "no-restricted-syntax": "off",
+      "no-console": "off",
+      "comma-dangle": ["error", "never"],
+      "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+      "react/jsx-curly-spacing": [2, {"when": "always", "spacing": {
+        "objectLiterals": "never"
+      }}],
+      "react/destructuring-assignment": [0],
+      "react/prop-types": [0],
+      "space-in-parens": [0],
+      "camelcase": "off",
+      "no-lonely-if": "off",
+      "jsx-a11y/no-noninteractive-element-interactions": "off",
+      "jsx-a11y/click-events-have-key-events": "off",
+      "react/jsx-one-expression-per-line": "off",
+      "react/jsx-closing-tag-location": "off",
+      "react/self-closing-comp": "off",
+      "wrap-iife": "off",
+      "react/no-unescaped-entities": "off",
+      "max-len": "off",
+      "react/no-danger": "off",
+      "no-nested-ternary": "off",
+      "class-methods-use-this": "off",
+      "jsx-a11y/no-static-element-interactions": "off",
+      "prefer-destructuring": "off",
+      "object-curly-newline": "off",
+      "react/no-array-index-key": "off"
+    }
+    
+  }

@@ -1,0 +1,26 @@
+.home-page {
+  margin-bottom: 40px;
+}
+.home-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 20px 0 10px;
+}
+.article-box {
+  width: 100%;
+  float: left;
+  min-height: 10px;
+}
+.aside {
+  width: 300px;
+  float: left;
+  margin-left: -300px;
+  position: relative;
+  right: -300px;
+  box-sizing: border-box;
+  padding-left: 20px;
+}
+.wrap {
+  overflow: hidden;
+  padding-right: 300px;
+}

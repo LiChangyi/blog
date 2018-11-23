@@ -1,0 +1,63 @@
+.page-container {
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  width: 1300px;
+  position: relative;
+}
+html,body,#root {
+  height: 100%;
+}
+main.page-container {
+  min-height: 65%;
+}
+.display-inline-block {
+  display: inline-block;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button, i {
+  cursor: pointer;
+}
+* {
+  padding: 0;
+  margin: 0;
+}
+@media screen and (max-width: 1300px){
+  .page-container {
+    width: 950px;
+  }
+  .home-page .article-item {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 950px){
+  .page-container {
+    width: 100%;
+    .wrap {
+      padding: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 736px){
+  .cover-wrap {
+    .title {
+      font-size: 24px;
+    }
+  }
+  .page-container {
+    .article-item {
+      width: 100%;
+      padding: 10px 0;
+    }
+    .paginatortion-total {
+      display: block;
+      margin: 20px 0;
+      font-size: 18px;
+    }
+  }
+}

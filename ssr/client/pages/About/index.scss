@@ -1,0 +1,47 @@
+.about-avatar {
+  text-align: center;
+  img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+  }
+}
+.about-page {
+  padding-top: 20px;
+  h1 {
+    position: relative;
+    color: #242f35;
+    padding: 5px 0 5px 16px;
+    margin: 10px 0;
+    font-weight: 400;
+    height: 20px;
+    line-height: 20px;
+    font-size: 18px;
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 4px;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background: #1a1818;
+      background: linear-gradient(to bottom,#1a1818 35%,#353030 100%) left center no-repeat;
+      background-size: 100%;
+    }
+  }
+}
+.myInfo p{
+  font-size: 16px;
+  text-indent: 2em;
+  line-height: 30px;
+}
+.myInfo {
+  a {
+    color: red;
+    &:hover {
+      font-weight: bold;
+    }
+  }
+}

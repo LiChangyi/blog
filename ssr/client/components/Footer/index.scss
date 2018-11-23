@@ -1,0 +1,48 @@
+.footer {
+  position: relative;
+}
+.copyright {
+  background: #1a1818;
+  background: linear-gradient(to right,#1a1818 35%,#353030 100%);
+  border-top: 1px solid #ccc;
+  text-align: center;
+  color: #fff;
+  font-size: 22px;
+  padding: 20px 0;
+  p {
+    margin: 10px 0;
+  }
+}
+.to-box {
+  z-index: 10;
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  color: #fff;
+  div {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #1a1818;
+    text-align: center;
+    margin-bottom: 5px;
+    line-height: 50px;
+    cursor: pointer;
+  }
+  i {
+    color: #fff;
+    font-size: 22px;
+  }
+}
+.btn-hidden {
+  display: none;
+  visibility: hidden;
+}
+.to-comment {
+  display: none;
+}
+@media screen and (max-width: 950px){
+  .btn-hidden {
+    visibility: unset;
+  }
+}

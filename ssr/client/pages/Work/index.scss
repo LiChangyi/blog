@@ -1,0 +1,72 @@
+.work-list {
+  margin-top: 20px;
+  overflow: hidden;
+  line-height: 1.5;
+}
+.work-item {
+  width: 25%;
+  float: left;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  padding: 10px;
+  text-align: center;
+}
+.works-img-cover {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  .cover {
+    width: 100%;
+    min-height: 120px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    box-sizing: border-box;
+    transition: transform .6s;
+    transform: rotateX(90deg);
+  }
+  img {
+    width: 100%;
+    min-height: 100%;
+  }
+  &:hover {
+    .cover {
+      transform: rotateX(0deg);
+    }
+  }
+}
+.works-desc {
+  font-size: 18px;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+.works-info {
+  padding: 10px 0;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+.works-name {
+  font-size: 18px;
+}
+
+@media screen and (max-width: 1300px){
+  .work-item {
+    width: 33%;
+  }
+}
+
+@media screen and (max-width: 950px){
+  .work-item {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 736px){
+  .work-item {
+    width: 100%;
+    padding: 0;
+  }
+}
