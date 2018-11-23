@@ -89,7 +89,7 @@ export const getTags = axios => (
       const res = await axios.api_get_tags();
       const { data = [] } = res.data;
       data.sort((a, b) => (
-        a.num < b.num
+        b.num - a.num
       ));
       dispatch(initTags(data));
     } catch (err) {

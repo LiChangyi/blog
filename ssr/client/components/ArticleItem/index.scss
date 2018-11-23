@@ -9,7 +9,7 @@
   width: 100%;
 }
 .article-cover {
-  height: 250px;
+  height: 200px;
   overflow: hidden;
   position: relative;
   cursor: pointer;
@@ -121,5 +121,10 @@
     &:hover {
       color: #000;
     }
+  }
+}
+@media screen and (max-width: 736px){
+  .article-cover {
+    height: auto;
   }
 }
