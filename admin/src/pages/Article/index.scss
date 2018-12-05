@@ -1,0 +1,36 @@
+.article-page {
+  font-size: 16px;
+  line-height: 1.5;
+  .article-list {
+    margin-top: 20px;
+  }
+  .article-item {
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    text-align: center;
+    word-break: break-all;  
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    .title {
+     flex-grow: 1;
+    }
+    .create_at, .update_at {
+      min-width: 300px;
+    }
+    .tags, .state {
+      min-width: 100px;
+    }
+    .tags {
+      max-width: 100px;
+      .tag {
+        font-size: 14px;
+        display: block;
+        margin: 5px auto;
+      }
+    }
+    .operation {
+      min-width: 300px;
+    }
+  }
+}

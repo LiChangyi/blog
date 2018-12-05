@@ -1,0 +1,41 @@
+{
+  "name": "admin web",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "immutable": "^4.0.0-rc.12",
+    "qiniu-js": "^2.5.2",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
+    "react-helmet": "^5.2.0",
+    "react-redux": "^5.1.0",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.0",
+    "react-simplemde-editor": "^3.6.22",
+    "react-transition-group": "^2.5.0",
+    "redux": "^4.0.1",
+    "redux-saga": "^0.16.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "node-sass": "^4.9.4",
+    "redux-devtools-extension": "^2.13.5",
+    "sass-loader": "^7.1.0"
+  },
+  "proxy": "http://localhost:7777"
+}

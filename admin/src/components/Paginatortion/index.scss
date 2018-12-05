@@ -1,0 +1,54 @@
+.paginatortion {
+  margin-top: 20px;
+  font-size: 16px;
+  text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  ul {
+    text-align: center;
+    display: inline-block;
+    vertical-align: bottom;
+  }
+  li{
+    display: inline-block;
+    border: 1px solid #1a1818cc;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 30px;
+    margin: 0 3px;
+    vertical-align: bottom;
+    transition: color,background .6s;
+  }
+  .jump_input {
+    width: 40px;
+    height: 30px;
+    font-size: 16px;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #1a1818cc;
+    text-align: center;
+    margin-left: 20px;
+    margin-right: 5px;
+    &:focus {
+      border-bottom-color: red;
+    }
+  }
+  .jump_btn {
+    width: 80px;
+    font-size: 16px;
+    height: 30px;
+    outline: none;
+    vertical-align: bottom;
+    color: #fff;
+    background: #1a1818;
+    border: none;
+  }
+  .active {
+    color: #fff;
+    background: #1a1818;
+  }
+}
