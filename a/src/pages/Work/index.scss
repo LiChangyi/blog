@@ -1,0 +1,39 @@
+.work-page {
+  line-height: 1.5;
+  .work-item {
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    text-align: center;
+    word-break: break-all;  
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    .name ,.website,.cover,.operator {
+      min-width: 200px;
+      max-width: 200px;
+    }
+    .name {
+      text-align: left;
+    }
+    .time {
+      min-width: 100px;
+    }
+    .descript {
+      flex-grow: 1;
+      text-align: left;
+      padding: 0 10px;
+    }
+    .cover {
+      .cover-img {
+        height: 40px;
+        vertical-align: middle;
+      }
+    }
+    .website-link {
+      transition: color .24s;
+      &:hover{
+        color: #62be93;
+      }
+    }
+  }
+}

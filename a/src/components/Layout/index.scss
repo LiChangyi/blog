@@ -1,0 +1,26 @@
+#root,.container {
+  height: 100%;
+}
+.container {
+  display: flex;
+}
+.nav-left {
+  min-width: 280px;
+  border-right: 1px solid #ccc;
+  text-align: center;
+  box-shadow: 0 0 2px #ccc;
+  background-color: #23292f;
+  color: #ccc;
+}
+.main-right {
+  flex-grow: 1;
+  // min-width: 800px;
+  overflow-x: auto;
+  padding: 20px;
+  font-size: 16px;
+  >div {
+    min-width: 1350px;
+    overflow: auto;
+    font-size: 18px;
+  }
+}

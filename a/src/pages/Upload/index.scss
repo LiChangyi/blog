@@ -1,0 +1,72 @@
+.upload-page {
+  .tool {
+    padding-bottom: 10px;
+    border-bottom: 1px dotted #ccc;
+    margin-bottom: 10px;
+  }
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-break: break-all;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    line-height: 1.5;
+    font-size: 16px;
+  }
+  .table-th {
+    font-size: 18px;
+  }
+  .codename,.realname {
+    min-width: 200px;
+    max-width: 200px;
+  }
+  .website {
+    min-width: 250px;
+    max-width: 250px;
+  }
+  .preview {
+    margin-top: 5px;
+    max-width: 90%;
+  }
+  .detail {
+    flex-grow: 1;
+  }
+  .website {
+    text-align: center;
+  }
+  .size {
+    width: 100px;
+  }
+  .uploadBox {
+    display: flex;
+    padding-right: 10px;
+  }
+  .progress {
+    flex: 1;
+    border: 1px solid #ccc;
+    margin-right: 20px;
+    position: relative;
+    .bar {
+      position: absolute;
+      height: 100%;
+      background: #23292f;
+      top: 0;
+      left: 0;
+    }
+  }
+  .detail-title {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  .copy-text {
+    width: 220px;
+    margin-bottom: 10px;
+    background: transparent;
+    cursor: pointer;
+    word-break: break-all;
+    resize: none;
+    border: none;
+    outline: none;
+  }
+}

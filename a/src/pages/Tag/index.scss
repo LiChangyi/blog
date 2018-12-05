@@ -1,0 +1,30 @@
+.tag-page {
+  font-size: 14px;
+  .tool {
+    margin-bottom: 20px;
+  }
+  .tags-item {
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    word-break: break-all; 
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    li {
+      list-style: none;
+    }
+    .name, .operator {
+      min-width: 200px;
+    }
+    .descript {
+      flex: 1;
+    }
+    .operator {
+      text-align: center;
+    }
+    .art-num {
+      min-width: 100px;
+      text-align: center;
+    }
+  }
+}

@@ -1,0 +1,50 @@
+.set-page {
+  overflow:  hidden !important;
+  .title {
+    font-size: 26px;
+    font-weight: bold;
+    border-bottom: 1px dotted #ccc;
+    padding: 5px 0 10px;
+    line-height: 1.8;
+  }
+  .form {
+    margin: 8px 0;
+  }
+  .item {
+    display: flex;
+    padding: 10px 0;
+    align-items:center;
+    justify-content: center;
+    word-break: break-all;
+  }
+  .item-title{
+    min-width: 180px;
+    text-align: right;
+    padding-right: 20px;
+  }
+  .contains {
+    flex-grow: 1;
+    padding-right:20px; 
+    input,.about-markdown {
+      width: 100%;
+      resize: none;
+      outline: none;
+      font-size: 16px;
+      line-height: 22px;
+      word-break: break-all;
+      padding: 5px;
+    }
+  }
+  .about-markdown {
+    height: 200px;
+  }
+  .tool {
+    text-align: right;
+    .btn {
+      font-size: 16px;
+      margin-top: 20px;
+      width: 150px;
+      height: 38px;
+    }
+  }
+}

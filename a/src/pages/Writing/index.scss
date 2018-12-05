@@ -1,0 +1,82 @@
+.writing-page {
+  font-size: 18px;
+  overflow: hidden !important;
+  h1,p,span{
+    line-height: 1.5;
+  }
+  .item {
+    overflow: hidden;
+    min-height: 40px;
+    line-height: 40px;
+    padding: 10px 0;
+    border-bottom: 1px dashed #ccc;
+    display: flex;
+    & + .item {
+      margin-top: 10px;
+    }
+  }
+  .item-title {
+    min-width: 60px;
+    vertical-align: middle;
+  }
+  .contains {
+    flex-grow: 1;
+  }
+  .text-input {
+    margin: 0 5px;
+    padding: 5px;
+    width: 350px;
+    line-height: 150%;
+    outline: none;
+    border: none;
+    border-bottom: 1px dotted #ccc;
+    transition: border-bottom-color .6s;
+    &:focus {
+      border-color: #23292f;
+    }
+  }
+  .radio-input,.checkbox-input {
+    display: none;
+    &:checked+.label-name{
+      background-color: #23292F;
+      color: #fff;
+    }
+  }
+  .label-item {
+    float: left;
+  }
+  .label-name {
+    margin: 5px 5px 0 0;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color,color .6s;
+    cursor: pointer;
+  }
+  .show-cover {
+    height: 40px;
+    width: auto;
+    vertical-align: middle;
+  }
+  .content {
+    margin-top: 10px;
+  }
+  .tool {
+    text-align: right;
+  }
+  .markdown-body .CodeMirror-scroll  {
+    max-height: 350px;
+    overflow-y: scroll;
+  }
+  .markdown-body .CodeMirror-fullscreen .CodeMirror-scroll{
+    max-height: 100%;
+  }
+  .btn-label {
+    display: block;
+    cursor: pointer;
+  }
+}
+#update-md {
+  opacity: 0;
+  position: relative;
+  z-index: -1;
+}
