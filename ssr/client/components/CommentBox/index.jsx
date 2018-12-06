@@ -7,16 +7,17 @@ class CommentBox extends React.Component {
     const toComment = document.getElementsByClassName('to-comment')[0];
     toComment.style.display = 'block';
     if (window.Gitalk) {
+      const path = window.location.href.split('?')[0];
       const gitalk = new window.Gitalk({
         clientID: 'd75901ac79dacf9fc13a',
         clientSecret: 'bdebffae134a6899651e6c1156e07c5de799dbd7',
         repo: 'blog',
         owner: 'LiChangyi',
         admin: ['LiChangyi'],
-        id: md5(window.location.href),
+        id: md5(path),
         distractionFreeMode: false,
         labels: ['blog.lcylove.cn'],
-        body: `文章地址: ${window.location.href}`,
+        body: `文章地址: ${path}`,
         title: "PAWNs'blog的博客文章: http://blog.lcylove.cn"
       });
       gitalk.render('gitalk-comment');
