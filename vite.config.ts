@@ -1,16 +1,31 @@
-import { UserConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
+import { UserConfig } from 'vite';
+import { resolve } from 'path';
+import Vue from '@vitejs/plugin-vue';
+import ViteRestart from 'vite-plugin-restart';
+import Article from './plugins/article';
+
+const isProd: boolean = process.env.NODE_ENV === 'production' ? true : false;
 
 const config: UserConfig = {
+  base: isProd ? 'https://cdn.jsdelivr.net/gh/lichangyi/blog@gh-pages/' : '/',
+  build: {
+    minify: false,
+  },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+      '~': resolve(__dirname),
+    },
+  },
   plugins: [
     Vue({
-      include: [/\.vue$/, /\.md$/],
+      include: [/\.vue$/],
+    }),
+    Article(),
+    ViteRestart({
+      restart: ['./article/*.md'],
     }),
   ],
-  ssgOptions: {
-    script: 'async',
-    formatting: 'prettify',
-  },
-}
+};
 
 export default config;

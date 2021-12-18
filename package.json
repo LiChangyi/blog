@@ -1,21 +1,48 @@
 {
   "name": "blog",
   "version": "0.0.0",
+  "author": "Licy",
+  "homepage": "https://licy.vip",
   "scripts": {
-    "dev": "vite",
-    "build": "vite-ssg build",
+    "dev": "cross-env NODE_ENV=development vite",
+    "build": "cross-env NODE_ENV=production vite-ssg build",
     "serve": "vite preview"
   },
+  "sideEffects": [
+    "prismjs/components/*.js"
+  ],
   "dependencies": {
-    "vue": "^3.2.16"
+    "nprogress": "^0.2.0",
+    "vue": "^3.2.16",
+    "vue-router": "^4.0.12"
   },
   "devDependencies": {
+    "@types/markdown-it": "^12.2.3",
+    "@types/node": "^16.11.12",
+    "@types/nprogress": "^0.2.0",
+    "@types/prismjs": "^1.16.6",
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/parser": "^5.5.0",
     "@vitejs/plugin-vue": "^1.9.3",
     "@vueuse/head": "^0.7.2",
+    "autoprefixer": "^10.4.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.4.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^8.1.1",
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^12.2.0",
+    "postcss": "^8.4.4",
+    "postcss-nested": "^5.0.6",
+    "prismjs": "^1.25.0",
+    "tailwindcss": "^2.2.19",
     "typescript": "^4.4.3",
     "vite": "^2.6.4",
+    "vite-plugin-restart": "^0.0.2",
     "vite-ssg": "^0.16.2",
-    "vue-router": "^3.5.3",
     "vue-tsc": "^0.3.0"
-  }
+  },
+  "license": "MIT",
+  "private": true
 }
