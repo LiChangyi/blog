@@ -42,3 +42,19 @@ jobs:
         build_dir: dist
       env:
         GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+    # 上传到服务器
+    - name: deploy to tencent
+      uses: easingthemes/ssh-deploy@main
+      env:
+        # 私钥
+        SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+        # scp参数
+        ARGS: "-rltgoDzvO --delete"
+        # 源目录
+        SOURCE: dist
+        # 服务器ip
+        REMOTE_HOST: ${{ secrets.SERVER_IP }}
+        # 用户
+        REMOTE_USER: github
+        # 目标地址 你在服务器上部署代码的地方
+        TARGET: c

@@ -8,9 +8,6 @@ const isProd: boolean = process.env.NODE_ENV === 'production' ? true : false;
 
 const config: UserConfig = {
   base: isProd ? 'https://cdn.jsdelivr.net/gh/lichangyi/blog@gh-pages/' : '/',
-  build: {
-    minify: false,
-  },
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
