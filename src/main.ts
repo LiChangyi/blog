@@ -13,7 +13,6 @@ export const createApp = ViteSSG(
   ({ router, isClient }) => {
     if (isClient) {
       router.beforeEach(() => {
-        console.log('licy a');
         NProgress.start();
       });
       router.afterEach(() => {

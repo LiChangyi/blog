@@ -3,11 +3,10 @@ import { resolve } from 'path';
 import Vue from '@vitejs/plugin-vue';
 import ViteRestart from 'vite-plugin-restart';
 import Article from './plugins/article';
-
-const isProd: boolean = process.env.NODE_ENV === 'production' ? true : false;
+import { cdnUrl } from './env';
 
 const config: UserConfig = {
-  base: isProd ? 'https://cdn.jsdelivr.net/gh/lichangyi/blog@gh-pages/' : '/',
+  base: cdnUrl,
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
@@ -20,7 +19,7 @@ const config: UserConfig = {
     }),
     Article(),
     ViteRestart({
-      restart: ['./article/*.md'],
+      restart: ['./article/**/*.md'],
     }),
   ],
 };

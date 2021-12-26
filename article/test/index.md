@@ -9,6 +9,16 @@ classify: Code
 
 这是一个测试文档 `你好呀` [licy](https://www.licy.vip) `hello world`
 
+![测试图片](./images/test.png)
+![测试图片](./images/test.png "test")
+
+```typescript
+const a = '123';
+if (a === '123') {
+  
+}
+```
+
 无序列表
 * [licy](https://www.licy.vip)
 * [licy](https://www.licy.vip)

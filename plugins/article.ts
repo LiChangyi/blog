@@ -4,6 +4,7 @@ import MarkdownIt from 'markdown-it';
 import type { PluginOption } from 'vite';
 import matter from 'gray-matter';
 import prismjs from 'prismjs';
+import { cdnUrl, isProd } from '../env';
 import 'prismjs/components/prism-jsx.min.js';
 import 'prismjs/components/prism-typescript.min.js';
 import 'prismjs/components/prism-json.min.js';
@@ -68,18 +69,44 @@ const findRepeatPath = (articles: Article[]) => {
   return result;
 };
 
+/**
+ * 为了方便本地使用类似 typora 工具进行编写文章，所以 markdown 中使用图片的地址是相对路径
+ * 所以如果需要在开发/生产环境进行展示，需要替换 url 地址
+ */
+const replaceImageUrlFormMD = (md: string, dir: string): string => {
+  // image 格式 ![alt](url title)
+  const urlReg = /!\[(.*?)\]\((.*?)( (.*?))?\)/g;
+  const result = md.replace(urlReg, (...args) => {
+    const alt: string = args[1] || '';
+    let url: string = args[2] || '';
+    const title: string = args[3] ? ` ${args[3]}` : '';
+    const match = url.match(/^.\/(.*?)$/);
+    if (match) {
+      url = `${cdnUrl}${dir}/${match[1]}`;
+    }
+    return `![${alt}](${url} ${title})`;
+  });
+  return result;
+};
+
 const getAllArticle = () => {
   const result: Article[] = [];
   const files = fs.readdirSync(path.resolve(__dirname, '../article'));
   files.forEach((file) => {
     // 排除测试文件
-    if (process.env.NODE_ENV === 'production' && file === 'test.md') {
+    if (isProd && file === 'test') {
       return;
     }
-    const md = fs.readFileSync(
-      path.resolve(__dirname, `../article/${file}`),
-      'utf8'
-    );
+    // 如果是文件夹
+    let filePath = path.resolve(__dirname, `../article/${file}`);
+    const stat = fs.lstatSync(filePath);
+    if (stat.isDirectory()) {
+      // 路径是一个文件夹，需要需要拼接后缀
+      filePath += '/index.md';
+    }
+    let md = fs.readFileSync(filePath, 'utf8');
+    // 替换图片地址
+    md = replaceImageUrlFormMD(md, `article/${file}`);
     const matterInfo = matter(md);
     const data = {
       ...matterInfo.data,
