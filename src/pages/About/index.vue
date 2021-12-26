@@ -35,7 +35,7 @@ const infos = [
   },
   {
     icon: 'company',
-    content: '字节跳动-Tns-Data-FE',
+    content: '字节跳动-Data-Tns-FE',
   },
   {
     icon: 'comment',

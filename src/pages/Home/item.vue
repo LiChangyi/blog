@@ -1,23 +1,15 @@
 <template>
-  <div class="item">
-    <div class="px-8 py-4">
-      <div class="flex text-base items-center py-1 flex-wrap">
-        <div class="w-1.5 h-1.5 rounded-full bg-white" />
-        <div class="mx-2 flex-shrink-0">
-          {{ `${article.createAt}` }}
-        </div>
-        <div
-          class="mr-2 bg-classify px-0.5 rounded-sm w-16 text-center flex-shrink-0"
-        >
-          {{ article.classify }}
-        </div>
-        <router-link
-          class="sm:mr-2 w-full mt-2 sm:w-auto sm:mt-0"
-          :to="`/article/${article.path}`"
-          >{{ article.title }}</router-link
-        >
-      </div>
+  <div class="py-4 flex text-base items-center gap-2 flex-wrap">
+    <div class="w-1.5 h-1.5 rounded-full bg-white" />
+    <div class="flex-shrink-0">
+      {{ `${article.createAt}` }}
     </div>
+    <div class="bg-classify px-0.5 rounded-sm w-16 text-center flex-shrink-0">
+      {{ article.classify }}
+    </div>
+    <router-link :to="`/article/${article.path}`">
+      {{ article.title }}
+    </router-link>
   </div>
 </template>
 
