@@ -1,5 +1,5 @@
 ---
-path: 2019-year-and-summary
+path: 2019-year-end-review
 title: 凡是过往，皆为序章
 desc: 凡是发生的事情都已经成为过去，不念过往，不惧将来。
 createAt: 2020.01.01

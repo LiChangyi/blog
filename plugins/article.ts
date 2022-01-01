@@ -69,6 +69,7 @@ const findRepeatPath = (articles: Article[]) => {
   return result;
 };
 
+const networkImageReg = /^https?:\/\//;
 /**
  * 为了方便本地使用类似 typora 工具进行编写文章，所以 markdown 中使用图片的地址是相对路径
  * 所以如果需要在开发/生产环境进行展示，需要替换 url 地址
@@ -80,9 +81,12 @@ const replaceImageUrlFormMD = (md: string, dir: string): string => {
     const alt: string = args[1] || '';
     let url: string = args[2] || '';
     const title: string = args[3] ? ` ${args[3]}` : '';
-    const match = url.match(/^.\/(.*?)$/);
-    if (match) {
-      url = `${cdnUrl}${dir}/${match[1]}`;
+    // 网络图片不做处理
+    if (!url.match(networkImageReg)) {
+      const match = url.match(/^(\.\/)?(.*?)$/);
+      if (match) {
+        url = `${cdnUrl}${dir}/${match[2]}`;
+      }
     }
     return `![${alt}](${url} ${title})`;
   });
@@ -93,10 +97,6 @@ const getAllArticle = () => {
   const result: Article[] = [];
   const files = fs.readdirSync(path.resolve(__dirname, '../article'));
   files.forEach((file) => {
-    // 排除测试文件
-    if (isProd && file === 'test') {
-      return;
-    }
     // 如果是文件夹
     let filePath = path.resolve(__dirname, `../article/${file}`);
     const stat = fs.lstatSync(filePath);
@@ -108,6 +108,11 @@ const getAllArticle = () => {
     // 替换图片地址
     md = replaceImageUrlFormMD(md, `article/${file}`);
     const matterInfo = matter(md);
+
+    // 草稿文件，正式发布时不进行发布
+    if (isProd && matterInfo.data.status === 'draft') {
+      return;
+    }
     const data = {
       ...matterInfo.data,
       content: parseMarkdown(matterInfo.content),
