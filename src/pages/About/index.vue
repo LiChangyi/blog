@@ -1,21 +1,31 @@
 <template>
   <div>
-    <div>
-      <div
-        class="flex text-gray-400 items-center text-base mb-2"
-        v-for="(item, index) in infos"
-        :key="index"
-      >
-        <Icon class="text-gray-200 mr-2" :type="item.icon" />
-        <span v-if="item.icon !== 'comment'">{{ item.content }}</span>
-        <div v-else class="flex text-base">
-          <div class="mr-2" v-for="(item, index) in links" :key="index">
-            <a :href="item.link" target="__blank" rel="noopener"
-              ><Icon :type="item.icon"
-            /></a>
-          </div>
-        </div>
-      </div>
+    <h1 class="text-4xl font-extrabold text-main-color mb-8">About Me</h1>
+    <div class="text-base text-secondary-color leading-7">
+      <p>Hi all!!!</p>
+      <p>
+        我是李昌义（Licy），是一名前端开发工程师。毕业于成都大学（2020届计算机科学与技术），目前就职于字节跳动。
+      </p>
+      <p>主要的工作内容是低代码建站方面，希望可以和大家一起讨论。</p>
+      <p>
+        你可以通过
+        <a
+          class="about-link"
+          href="https://github.com/LiChangyi"
+          target="_blank"
+          >GitHub</a
+        >，
+        <a
+          class="about-link"
+          href="https://juejin.cn/user/3403743729816398"
+          target="_blank"
+          >掘金</a
+        >，
+        <a class="about-link" href="mailto:licy97love@gmail.com" target="_blank"
+          >Email</a
+        >
+        联系我。
+      </p>
     </div>
   </div>
 </template>
@@ -23,39 +33,7 @@
 <script setup lang="ts">
 import { SUFFIX_TITLE } from '@/common/constant';
 import { useHead } from '@vueuse/head';
-import Icon from '@/components/Icon/index.vue';
-const infos = [
-  {
-    icon: 'user',
-    content: '李昌义（Licy）',
-  },
-  {
-    icon: 'school',
-    content: '成都大学',
-  },
-  {
-    icon: 'company',
-    content: '字节跳动-Data-Tns-FE',
-  },
-  {
-    icon: 'comment',
-  },
-];
-
-const links = [
-  {
-    icon: 'github',
-    link: 'https://github.com/LiChangyi',
-  },
-  {
-    icon: 'juejin',
-    link: 'https://juejin.cn/user/3403743729816398',
-  },
-  {
-    icon: 'email',
-    link: 'mailto:licy97love@gmail.com',
-  },
-];
+import './index.postcss';
 
 useHead({
   title: `About${SUFFIX_TITLE}`,
