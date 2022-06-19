@@ -22,6 +22,9 @@ const config: UserConfig = {
       restart: ['./article/**/*.md'],
     }),
   ],
+  server: {
+    host: '0.0.0.0'
+  }
 };
 
 export default config;
