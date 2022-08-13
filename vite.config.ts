@@ -18,13 +18,13 @@ const config: UserConfig = {
       include: [/\.vue$/],
     }),
     Article(),
-    ViteRestart({
+    (ViteRestart as unknown as { default: typeof ViteRestart }).default({
       restart: ['./article/**/*.md'],
     }),
   ],
   server: {
-    host: '0.0.0.0'
-  }
+    host: '0.0.0.0',
+  },
 };
 
 export default config;
