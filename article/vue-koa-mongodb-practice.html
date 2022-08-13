@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/lichangyi/blog@gh-pages/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="李昌义的个人博客">
+    <meta name="keywords" content="HTML, CSS, JavaScript, JS, TypeScript, TS, 前端">
+    <meta name="author" content="licy, 李昌义">
+    <title>Vue+Koa+Mongodb 小练习 | Licy's Blog</title>
+    <script src="//at.alicdn.com/t/font_3007588_3jwt36rb1sb.js"></script>
+    <script type="module" crossorigin="" src="https://cdn.jsdelivr.net/gh/lichangyi/blog@gh-pages/assets/app.736fae21.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lichangyi/blog@gh-pages/assets/index.3a6cf2cf.css">
+  <meta name="description" content="基于vue koa mongodb进行登录，注册，留言的简单网站。"><meta name="head:count" content="1"></head>
+  <body>
+    <div id="app" data-server-rendered="true"><!--[--><header class="flex items-center px-6 justify-end" style="height:60px;"><nav><a href="/" class="nav-item mr-4">Home</a><a href="/about" class="nav-item">About</a></nav></header><main class="main"><h1 class="text-4xl text-white mb-2">Vue+Koa+Mongodb 小练习</h1><div class="text-right">2018.09.18</div><article class="article"><h2>前面的话</h2>
+<h3>原因</h3>
+<ol>
+<li>前段时间用vue+koa+mongodb搭建了一个个人博客，因为是第一次写前后交互，发现有很多地方不是特别的完善，同时代码对于新学者来说可读性也不是很大。所以这个小练习，从一个简单的方面入手，希望能给踩过同样多坑的同路人一点启发。</li>
+<li>在我今年年初在学习vue以及koa的时候，网上对这方面的内容，都是一个完整的项目，文件太多，观看难度太大，其次是，都对图片的上传都没怎么涉及。</li>
+<li>我在学习部署koa和vue的项目的时候，网上的知识很零碎，这里我会归纳一下。</li>
+</ol>
+<h3>涉及知识点</h3>
+<ol>
+<li>vue全家桶的使用</li>
+<li>在vue中使用axios，并配置它</li>
+<li>koa与mongoose的基本使用</li>
+<li>jsonwebtoken的使用以及前后台鉴定登录</li>
+</ol>
+<p><strong>注： 本文面对刚学vue或者koa不久或者想了解一个简单的前后台交互的问题的同学，涉及基础。</strong></p>
+<h3>预览</h3>
+<p></p><div class="image-block"><img src="/loading.png" alt="首页预览" class="image" data-src="https://ws1.sinaimg.cn/large/006A3ND3gy1fymvyn2936j30z40ldq4m.jpg"><p class="image-title">首页预览</p></div><p></p>
+<p></p><div class="image-block"><img src="/loading.png" alt="登录预览" class="image" data-src="https://ws1.sinaimg.cn/large/006A3ND3gy1fymvyn1nm9j30r30gc3yw.jpg"><p class="image-title">登录预览</p></div><p></p>
+<p></p><div class="image-block"><img src="/loading.png" alt="注册预览" class="image" data-src="https://ws1.sinaimg.cn/large/006A3ND3gy1fymvyn195yj30om0n6js3.jpg"><p class="image-title">注册预览</p></div><p></p>
+<h2>感兴趣的问题</h2>
+<blockquote>
+<p>我在代码里面写了很多的注释方便阅读，这里简单说一下我个人当初学习的时候比较疑惑为问题</p>
+</blockquote>
+<h3>一些小变动</h3>
+<p>前端直接采用vue-cli进行一个基础的项目骨架。然后由于是一个简单的项目，所以页面就随便写一下，主要是实现功能。</p>
+<p>因为我们在服务器上面采用的是二级域名的形式，所以需要在 <code>config/index.js</code> 下面的 <code>build</code> 项里面将 <code>assetsPublicPath</code> 设置成相对路径。</p>
+<pre><code class="language-javascript"><span class="token literal-property property">assetsPublicPath</span><span class="token operator">:</span> <span class="token string">''</span>
+</code></pre>
+<p>我们在本地开发的时候需要进行调试，需要用到代理，不然就只有设置后台允许跨域。所以在  <code>config/index.js</code> 下面的 <code>dev</code> 对象里面添加：</p>
+<pre><code class="language-javascript"><span class="token literal-property property">proxyTable</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token string-property property">'/api'</span><span class="token operator">:</span><span class="token punctuation">{</span>  <span class="token comment">// 只代理 /api url下的请求</span>
+        <span class="token literal-property property">target</span><span class="token operator">:</span> <span class="token string">"https://localhost:7778"</span><span class="token punctuation">,</span> <span class="token comment">// 后台服务器的地址</span>
+        <span class="token literal-property property">changeOrigin</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3>如何让服务器端记住你(jsonwebtoken)</h3>
+<p>HTTP请求是无状态的，意思是他记不住你这个人是谁，他只知道你要什么资源，然后给你什么。但是实际问题是当用户给我们寻求资源的时候，我们应该要考虑应该给他这个资源。对这个人的身份做一个判别，然后在做决定给他什么样的资源。</p>
+<p>所以针对每个用户我们需要用一个唯一的标识来确定他，这就是为什么需要登录才能操作，登录的目的就是让服务端产生一个认识你的标识，以后你的每次请求都要带上去。</p>
+<p>在前后台不分离的时候，服务器端往往会在客服端放一个<code>SessionId</code> 或者一个<code>cookie</code>的东西。但是现在前后端分离以后，我们登录成功，服务器端应该也会给我们这样一个唯一标识身份的字符串。然后我们在每次请求数据的时候带上它。这里我服务器端采用的是<code>jsonwebtoken</code> 来制造这个唯一标识，代码详情 =&gt; <code>server/utils/token.js</code> 然后我写了一个中间件<code>check_token</code> 来判断如果这个资源需要登录，就会去检查他的token如果token不对那么就直接抛出错误。</p>
+<p>前端拿到服务端的token后我们需要把他存放起来这里大概会有2种方式：</p>
+<ol>
+<li>存在vuex 里面， 这种方式有一个弊端就是，网页一刷新vuex里面的数据就清空了。就意味着要重新登录。</li>
+<li>存在sessionStorage里面，采用浏览器的会话存储，只有当浏览器关闭的时候才会清空数据。</li>
+</ol>
+<p>这里我把2种方法结合起来，得到token的时候把他同时存放在vuex和sessionStorage里面，存放在vuex里面是为了操作方便，存放在sessionStorage是为了保持刷新页面的时候数据不丢失。在前端每次向后台请求数据的时候，带上这个token,详见代码 =&gt; <code>client/src/axios/index.js</code></p>
+<p>关于一些网上的争论：</p>
+<p>Q ：有人说，让客服端存放token不安全，或者说用sessionStorage方法来存放不安全，因为存在着csrf问题</p>
+<p>A ：没有绝对的安全，我个人了解到就是用以前的<code>cookie</code>或者<code>SessionId</code> 也存在着这样的问题。想要解决这个问题就尽量的吧网页升级成https，或者，采用服务器中转的方式，在2者之间在加入一个服务器端，把真实的token存放在中转，然后客服端与中转进行通信。</p>
+<h3>验证码的识别</h3>
+<p>验证码的生成我采用了<code>gd-bmp</code> 包具体用法，看<code>server/controller/other.js</code> 同样根据上面的介绍，http是没有状态的，我们要验证验证码的正确性，应该对每个验证码增加一个唯一的标识，然后存放在数据，当用户登录或者用户注册用到验证码的时候，把验证码和相应的验证码标识一起发往后台，然后判断验证码的正确与否。对于验证码及标识的存储，我这里为了方便就是采用mongodb来存储，但是网上很多人推荐用redis来存储。</p>
+<h3>本地图片的上传</h3>
+<p>这个问题从很久以前就很迷惑，一直不知道如何上传图片到服务器。即使h5出现了<code>&lt;input type="file"&gt;</code>但是解决这个问题也是很麻烦。我个人觉得上传图片应该有2种方式：</p>
+<ol>
+<li>直接用过input的onchang事件获取到的文件，来上传二进制文件。</li>
+<li>将图片转换成base64来进行上传</li>
+</ol>
+<p>我这里采用的是第二种，用base64上传图片，然后自己吧base64字符串保存进数据库，因为操作比较方便。当然你也可以在服务器端吧base64转换成二进制文件存放在服务器里面，然后把文件地址保存在数据库里面。也可以在本地直接上传二进制文件，如果你采用这个方式，那么你应该在koa里面在加入一个处理file请求的中间件。</p>
+<p>也可以借助第三方的存储，比如我在我的博客里面写了一个接口就是直接在客服端上传文件到七牛云，然后七牛云返回给我链接。当时之所以采用这个操作是因为，小水管服务器太慢了，借助第三方加载图片会快很多。</p>
+<h3>关于项目的服务器部署</h3>
+<p>因为vue的简单，很多都只知道<code>npm install</code> 和 <code>npm run dev</code> 所以有很多人会有疑问，那就是我这个vue项目如何部署在服务器上面？难道是把代码上传到服务器上面来执行上面2条命令吗？</p>
+<p>其实这个问题是由于大家只会机械式操作留下的，因为vue-cli的简单方便已经mvvm框架的厉害，我们忘记了我们写的东西本子上还是网页。所以我们需要用<code>webpack</code> 将我们的项目打包一下在命令行里面执行<code>npm run build</code> 将我们写的vue和js代码以及其他的资源文件，打包<code>/dist</code>里面。这里面的文件就是我们写的网页，，我们只需要吧这里面的文件上传到服务器下就可以运行了。</p>
+<p>这里关于把打包出来的文件往往会有2方式运行：</p>
+<ol>
+<li>将文件丢到<code>server/public</code> 文件夹下面，因为我们在<code>server/app.js</code>下面配置了静态文件目录，然后我们启动服务端。就可以在<code>127.0.0.1:7778/index.html</code>(假设服务器端口号是7778)看到我们的网页。</li>
+<li>用nginx服务器代理 ，静态文件用nginx托管，然后设置转发的方式来获取api请求数据。</li>
+</ol>
+<p>其实第一种的话也是借助与nodejs会自动启动一个服务器，进行静态文件的托管。我个人比较喜欢第二种方法，下面我们就进行这种文件的配置。</p>
+<p>开始之前，你应该检查你的服务器是否安装有<code>nginx</code>与<code>pm2</code></p>
+<pre><code class="language-bash">$ pm2 -v
+$ nginx -v
+</code></pre>
+<p>如果正确出现版本号，那么就已经安装了，如果没有的话，请谷歌安装。<code>pm2</code>的作用是进行进程守护，当你的nodejs意外的停止的时候，进行重启。</p>
+<p>如果我们有域名的话，我们现在域名商哪里添加一个二级域名解析。这里添加完解析以后会要几分钟的等待时间</p>
+<p></p><div class="image-block"><img src="/loading.png" alt="添加域名解析" class="image" data-src="https://image.lcylove.cn/165eb6463fe_6d6fc408"><p class="image-title">添加域名解析</p></div><p></p>
+<p>然后，我们找到nginx的配置文件<code>nginx.conf</code> 在里面加入：</p>
+<pre><code>server {
+        listen 80;
+        server_name demo.lcylove.cn;
+        root   /data/www/demo; 
+        index  index.html index.htm index.php;
+
+        location /api/ {
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header Host $http_host;
+            proxy_pass https://127.0.0.1:7778;
+        }
+    }
+</code></pre>
+<p>注意： <code>location /api/</code> 这里说明只有api/*的请求才会进行转发。</p>
+<p>然后进行nginx服务器的重启：<code>nginx -s reload</code></p>
+<p>我们把server的代码放在服务器下，通过命令行移到相应位置执行命令：</p>
+<pre><code class="language-bash">$ npm install &amp;&amp; cnpm i
+$ pm2 start --name demo1 npm -- run start
+</code></pre>
+<p>启动我们的nodejs服务器。然后我们就可以打开网站 <a href="https://demo.lcylove.cn" class="link" target="_blank" rel="noopener">demo.lcylove.cn</a> 查看效果</p>
+<h2>最后</h2>
+<p>由于本人才疏学浅，如果有任何问题的欢迎下面留言讨论！</p>
+</article></main><footer class="text-center p-4"><p class="mb-2">All rights reserved 2022 licy's Home !!!</p><p><a href="https://beian.miit.gov.cn/" target="_blank"> ©蜀ICP备18023961号-2 </a></p></footer><!--]--></div>
+    
+  
+
+</body></html>

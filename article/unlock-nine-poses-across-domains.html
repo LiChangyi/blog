@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/lichangyi/blog@gh-pages/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="李昌义的个人博客">
+    <meta name="keywords" content="HTML, CSS, JavaScript, JS, TypeScript, TS, 前端">
+    <meta name="author" content="licy, 李昌义">
+    <title>解锁跨域的九种姿势 | Licy's Blog</title>
+    <script src="//at.alicdn.com/t/font_3007588_3jwt36rb1sb.js"></script>
+    <script type="module" crossorigin="" src="https://cdn.jsdelivr.net/gh/lichangyi/blog@gh-pages/assets/app.736fae21.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lichangyi/blog@gh-pages/assets/index.3a6cf2cf.css">
+  <meta name="description" content="分析跨域，解锁跨域的九种姿势。"><meta name="head:count" content="1"></head>
+  <body>
+    <div id="app" data-server-rendered="true"><!--[--><header class="flex items-center px-6 justify-end" style="height:60px;"><nav><a href="/" class="nav-item mr-4">Home</a><a href="/about" class="nav-item">About</a></nav></header><main class="main"><h1 class="text-4xl text-white mb-2">解锁跨域的九种姿势</h1><div class="text-right">2019.01.24</div><article class="article"><h1>写在前面</h1>
+<p><strong>针对本文的九种方法我均写的有相应的demo演示(对应的前端文件，后端文件和配置文件)，强烈建议不熟悉的朋友都去尝试一下。</strong> 本文<a href="https://github.com/LiChangyi/crossDomain" class="link" target="_blank" rel="noopener">github地址</a>,<code>fontService</code>是前端地址文件，<code>service</code>是后端文件。</p>
+<p>网络上存在很多不同的跨域文章，我在学习的时候基本上也是去看他们的文章，但是有些地方的确理解起来有点困难，所以本文就这样产生了，希望能写一点和现在网络上文章中都不一样的东西。同时也把我自己的看法写进去，和大家相互交流自己的看法。</p>
+<p><strong>跨域</strong>在以前一直折磨着每个前端开发者。但是现在，三大框架的普及，我们在开发的过程中，只修改小小的配置，便没有这些顾虑。但实质上还是<code>webpack-dev-server</code>已经帮我们处理了这一个问题，把当前请求，代理到目标服务器上面，然后把获取到的数据返回。所以，现在很多前端开发者，包括我在写这篇文章之前，对跨域都不是很了解，只有一个个模模糊糊的概念，只会用<code>jsonp</code>去获取，或者直接用jq的jsonp方法去解决跨域，都不会去了解为什么这样就能解决跨域？甚至，很多人对跨域都已经放弃了，因为三大框架的学习，完善的脚手架功能，简化了我们，项目部署也有后端的同学帮我们解决。但是个人认为跨域是每一个前端开发者需要必备的能力，不论是跨域获取数据，还是后面进行<code>ssr服务端渲染</code>的配置都需要了解一点跨域，了解一点请求的代理。</p>
+<h1>为什么存在跨域</h1>
+<p><strong>我们在解决的一个问题的同时我们应该先去了解这个问题是如何产生的。</strong></p>
+<p>之所以要使用跨域，最终的罪魁祸首都是浏览器的<strong>同源策略</strong>，浏览器的同源策略限制我们只能在相同的协议、IP地址、端口号相同，如果有任何一个不通，都不能相互的获取数据。这里注意一下，<code>http</code>和<code>https</code>之间也存在跨域，因为https一般采用的是443端口，http采用的是80端口或者其他。这里也存在端口号的不同。想要详细了解请看 =&gt; <a href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy" class="link" target="_blank" rel="noopener">MDN对浏览器的同源策略的说明</a></p>
+<p>虽然同源策略的确很可恶，但是如果没有同源策略用户将会陷入很境界。比如，你正在吃着火锅哼着歌，逛着淘宝买东西，但是这时你的同学给你发了一个网址，然后你直接打开来看，假如没有同源策略，他在该网站中用一个<code>iframe</code>的标签然后把src指向淘宝网，这时没有同源策略，他便可以直接通过js操作iframe的页面，比如说获取<code>cookie</code>或者用js模拟点击这些操作(因为你已经登录过了，可以不用再次登录就点击了)，危害是很大的。大家可以先去做一个小测验，你在本地创建一个<code>a.html</code>和<code>b.html</code>2个文件，然后在<code>a.html</code>中用iframe中插入<code>b.html</code>，你会发现当前2个页面是一个域的，你可以在a中通过js控制b，和在b中直接用js操作没有区别。但是如果你插入的不是同一个域下面的页面，比如你插入的是淘宝，你会发现你不能通过js操作，你<code>console.log(iframe.contentWindow)</code>你会发现只有少数的几项。大家可以去看看大佬的文章：<a href="https://www.cnblogs.com/hyddd/archive/2009/04/09/1432744.html" class="link" target="_blank" rel="noopener">浅谈CSRF攻击方式</a>，虽然没有永远牢靠的盾，但是有同源策略的存在，会让攻击的成本变得高一点。</p>
+<p>虽然同源策略危害很大，但是我们还是在一定的场景下面需要进行跨域处理，比如说百度全家桶，你在百度地图和百度搜索2者之间肯定是放在2个域下面的（我没有具体的去了解，但是我猜想肯定是这样的）。在开发地图的时候假如需要应用搜索的时候就不得不用跨域了。比如：百度搜索，输入文字出现内容提示，如果我没有判断错误就是采用的jsonp来做得跨域。大家在学习了jsonp跨域的时候，可以去尝试去获取一下。</p>
+<h1>进入正题</h1>
+<h2>1.JSONP</h2>
+<p>说起如何去解决跨域，我相信每个人脑袋中跳出来的第一个词就是<code>jsonp</code>。因为浏览器的同源策略不限制<code>script</code>、<code>link</code>、<code>img</code>三个标签，比如我们经常用这三个标签来加载其他域的资源，我个人的看法这就已经算是跨域了。jsonp的跨域就是应用<code>script</code>标签可以进行获取远程的js脚本文件。</p>
+<pre><code class="language-javascript"><span class="token comment">// 比如1.js 脚本文件</span>
+<span class="token function">say</span><span class="token punctuation">(</span><span class="token string">'haha'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>我在html里面引入1.js文件，那么他讲会执行<code>say</code>函数，我们需要传入的数据就是<code>haha</code>。</p>
+<p>所以jsonp的方法就是动态的创建一个<code>script</code>标签，然后设置src为我们需要进行跨域的地址。当然这个方法需要后台的设置。大家可以看我写的代码，</p>
+<p>前端文件在<code>fontEndService/www/demo1/index,html</code></p>
+<pre><code class="language-javascript">btn<span class="token punctuation">.</span><span class="token function-variable function">onclick</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token function">jsonp</span><span class="token punctuation">(</span><span class="token string">'http://127.0.0.1:8888/api/getdata?jsonp=displayData'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">function</span> <span class="token function">jsonp</span><span class="token punctuation">(</span><span class="token parameter">url</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> script <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'script'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    script<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">'src'</span><span class="token punctuation">,</span> url<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    document<span class="token punctuation">.</span><span class="token function">getElementsByTagName</span><span class="token punctuation">(</span><span class="token string">'head'</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>script<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">function</span> <span class="token function">displayData</span><span class="token punctuation">(</span><span class="token parameter">data</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    msg<span class="token punctuation">.</span>innerText <span class="token operator">=</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>然后后端代码是用koa写的一个简约的接口，文件在<code>service/app.js</code></p>
+<pre><code class="language-javascript"><span class="token comment">// 简约的后端代码，我们直接调用前端传过来的需要执行的函数</span>
+router<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'/api/getdata'</span><span class="token punctuation">,</span> <span class="token parameter">ctx</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> params <span class="token operator">=</span> <span class="token function">get_params</span><span class="token punctuation">(</span>ctx<span class="token punctuation">.</span>request<span class="token punctuation">.</span>url<span class="token punctuation">)</span>
+  <span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">title</span><span class="token operator">:</span> <span class="token string">'数据获取'</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">list</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+  ctx<span class="token punctuation">.</span>body <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>params<span class="token punctuation">.</span>jsonp <span class="token operator">||</span> <span class="token string">'callback'</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">(</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">)</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
+<p>前端通过script标签给后台发送一个get请求，在jsonp=displayData(一个我们接受到数据然后执行的方法，该方法是前端的)，当我后台接受到请求后，就返回一个，执行displayData这个方法的脚本。然后把我们需要传递的数据放在形参里面。这样就相当于我们在前端里面执行displayData这个方法。用这个方法来实现跨域资源的共享。</p>
+<p>此方法是比较常用的一个方法，简单粗暴。但是此方法有一个致命的缺点就是只支持<code>GET</code>请求。所以说如果前端页面仅仅是作为页面的展示，就只获取数据的话，只用此方法就没有任何问题。</p>
+<h2>2.iframe+document.domain</h2>
+<p>这个方法，个人感觉不是特别的常用，因为这个跨域方法要求2个域之间的主域名相同，子域不同，比如a.xxx.com和b.xxx.com。如果不同的话是不行的。</p>
+<p>此方法的思想就是设置页面的<code>document.domain</code>把他们设置成相同的域名，比如都设置成<code>xxx.com</code>。这样来绕过同源策略。很简单的一个方法，具体的代码文件请看github。</p>
+<p>代码里面的测试案列是，前端文件在7777端口，后台文件在8888端口，前端如果需要请求后端的数据就存在跨域，所以我们在后端8888端口写一个提供数据的中转html，然后通过ajax或者其他的方法请求到数据，然后把数据往外暴露。此方法需要2个html都需要设置相同的主域。</p>
+<h2>3.iframe+location.hash</h2>
+<p>这种方法是一个很奇妙的方法，虽然我感觉很鸡肋，但是它的实现方法很巧妙，我在学习的时候都感觉到不可思议，还能这么玩？</p>
+<p>首先我们需要了解hash是什么？</p>
+<p>比如有一个这样的url：<code>http://www.xxx.com#abc=123</code>，那么我们通过执行<code>location.hash</code>就可以得到这样的一个字符串<code>#abc=123</code>，同时改变hash页面是不会刷新的。这一点，相信很多学习三大框架的朋友应该都见识过hash路由。所以说我们可以根据这一点来在<code>#</code>后面加上我们需要传递的数据。</p>
+<p>加入现在我们有A页面在7777端口(前端显示的文件)，B页面在8888端口，后台运行在8888端口。我们在A页面中通过<code>iframe</code>嵌套B页面。</p>
+<ol>
+<li>
+<p>从A页面要传数据到B页面</p>
+<p>我们在A页面中通过，修改<code>iframe</code>的<code>src</code>的方法来修改hash的内容。然后在B页面中添加<code>setInterval</code>事件来监听我们的hash是否改变，如果改变那么就执行相应的操作。比如像后台服务器提交数据或者上传图片这些。</p>
+</li>
+<li>
+<p>从B页面传递数据到A页面</p>
+<p>经过上面的方法，那么肯定有聪明的朋友就在想那么，从B页面向A页面发送数据就是修改A页面的hash值了。对没错方法就是这样，但是我在执行的时候会出现一些问题。我们在B页面中直接：</p>
+<pre><code class="language-javascript">parent<span class="token punctuation">.</span>location<span class="token punctuation">.</span>hash <span class="token operator">=</span> <span class="token string">"#xxxx"</span>
+</code></pre>
+<p>这样是不行的，因为前面提到过的同源策略不能直接修改父级的hash值，所以这里采用了一个我认为很巧妙的方法。部分代码：</p>
+<pre><code class="language-javascript"><span class="token keyword">try</span> <span class="token punctuation">{</span>
+    parent<span class="token punctuation">.</span>location<span class="token punctuation">.</span>hash <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">message=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ie、chrome 的安全机制无法修改parent.location.hash，</span>
+    <span class="token comment">// 利用一个中间html 的代理修改location.hash</span>
+    <span class="token comment">// 如A =&gt; B =&gt; C 其中，当前页面是B，AC在相同的一个域下。B 不能直接修改A 的 hash值故修改 C，让C 修改A</span>
+    <span class="token comment">// 文件地址： fontEndService/www/demo3/proxy.html</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>ifrProxy<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ifrProxy <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'iframe'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ifrProxy<span class="token punctuation">.</span>style<span class="token punctuation">.</span>display <span class="token operator">=</span> <span class="token string">'none'</span><span class="token punctuation">;</span>
+        document<span class="token punctuation">.</span>body<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>ifrProxy<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    ifrProxy<span class="token punctuation">.</span>src <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">http://127.0.0.1:7777/demo3/proxy.html#message=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>如果可以直接修改我们就直接修改，如果不能直接修改，那么我们在B页面中再添加一个<code>iframe</code>然后指向C页面(我们暂时叫他代理页面，此页面和A页面是在相同的一个域下面)，我们可以用同样的方法在url后面我们需要传递的信息。在代理页面中：</p>
+<pre><code class="language-javascript">parent<span class="token punctuation">.</span>parent<span class="token punctuation">.</span>location<span class="token punctuation">.</span>hash <span class="token operator">=</span> self<span class="token punctuation">.</span>location<span class="token punctuation">.</span>hash<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>只需要写这样的一段js代码就完成了修改A页面的hash值，同样在A页面中也添加一个<code>setInterval</code>事件来监听hash值的改变。</p>
+<p>我们现在再来理一下思路。我们现在有三个页面，A,B,C。</p>
+<p>A页面是我们前端显示的页面；</p>
+<p>B页面我们可以把他当做A页面也后端数据交互的一个中间页面，完成接受A的数据和向后台发送请求。但是由于同源策略的限制我们不能在B页面中直接修改A的hash值，所以我们需要借助一个与A页面在同一个域名下的C页面。</p>
+<p>C页面我们把他当中一个代理页面，我们因为他和A页面在一个域下，所以可以修改A的hash值。所以B页面修改C页面的hash值，然后C页面修改A页面的hash值。（C就是一个打工的）</p>
+</li>
+</ol>
+<p>此方法虽然我个人感觉实现的思路很巧妙但是，使用价值似乎不高，因为他实现的核心思路就是通过修改URL的hash值，然后用定时器来监听值的改变来修改。所以说最大的问题就是，我们传递的数据会直接在URL里面显示出来，不是很安全，同时URL的长度是一定的所以传输的数据也是有限的。</p>
+<h2>4.iframe+window.name</h2>
+<p>相比于前面2种<code>iframe</code>的方法，这种方法的使用人数要多一点。因为他有效的解决了前面2种方法很大的缺点。这种方法的原理就是<strong>window.name属性在于加载不同的页面(包括域名不同的情况下)，如果name值没有修改，那么它将不会变化。并且这个值可以非常的长(2MB)</strong></p>
+<p>方法原理：A页面通过<code>iframe</code>加载B页面。B页面获取完数据后，把数据赋值给window.name。然后在A页面中修改<code>iframe</code>使他指向本域的一个页面。这样在A页面中就可以直接通过<code>iframe.contentWindow.name</code>获取到B页面中获取到的数据。</p>
+<p>A页面中部分代码：</p>
+<pre><code class="language-javascript"><span class="token keyword">let</span> mark <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> ifr <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'iframe'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ifr<span class="token punctuation">.</span>src <span class="token operator">=</span> <span class="token string">"http://127.0.0.1:8888/demo4"</span><span class="token punctuation">;</span>
+ifr<span class="token punctuation">.</span>style<span class="token punctuation">.</span>display <span class="token operator">=</span> <span class="token string">'none'</span><span class="token punctuation">;</span>
+document<span class="token punctuation">.</span>body<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>ifr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ifr<span class="token punctuation">.</span><span class="token function-variable function">onload</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token comment">// iframe 中数据加载完成，触发onload事件</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>mark<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        msg<span class="token punctuation">.</span>innerText <span class="token operator">=</span> ifr<span class="token punctuation">.</span>contentWindow<span class="token punctuation">.</span>name<span class="token punctuation">;</span><span class="token comment">// 这就是数据</span>
+        document<span class="token punctuation">.</span>body<span class="token punctuation">.</span><span class="token function">removeChild</span><span class="token punctuation">(</span>ifr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mark <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        mark <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token comment">// 修改src指向本域的一个页面（这个页面什么都没有）</span>
+        ifr<span class="token punctuation">.</span>contentWindow<span class="token punctuation">.</span>location <span class="token operator">=</span> <span class="token string">"http://127.0.0.1:7777/demo4/proxy.html"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2>5.postMessage</h2>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/postMessage" class="link" target="_blank" rel="noopener">postMessage</a>是HTML5引入的API。他可以解决多个窗口之间的通信(包括域名的不同)。我个人认为他算是一种消息的推送，可以给每个窗口推送。然后在目标窗口添加<code>message</code>的监听事件。从而获取推送过来的数据。</p>
+<p>A页面中部分代码：</p>
+<pre><code class="language-javascript"><span class="token operator">&lt;</span>iframe id<span class="token operator">=</span><span class="token string">"iframe"</span> src<span class="token operator">=</span><span class="token string">"http://127.0.0.1:8888/demo5"</span> frameborder<span class="token operator">=</span><span class="token string">"0"</span><span class="token operator">&gt;</span><span class="token operator">&lt;</span><span class="token operator">/</span>iframe<span class="token operator">&gt;</span>
+
+iframe<span class="token punctuation">.</span>contentWindow<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token string">'getData'</span><span class="token punctuation">,</span> <span class="token string">'http://127.0.0.1:8888'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 监听其他页面给我发送的数据</span>
+window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span> <span class="token parameter">e</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>e<span class="token punctuation">.</span>origin <span class="token operator">!==</span> <span class="token string">'http://127.0.0.1:8888'</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+    msg<span class="token punctuation">.</span>innerText <span class="token operator">=</span> e<span class="token punctuation">.</span>data<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
+<p>这里我们给目标窗口<code>127.0.0.1:8888</code>推送了getData的数据。然后在B页面中添加事件的监听。</p>
+<p>B页面中部分代码：</p>
+<pre><code class="language-javascript">window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span> <span class="token parameter">e</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 判断来源是不是我们信任的站点，防止被攻击</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>e<span class="token punctuation">.</span>origin <span class="token operator">!==</span> <span class="token string">'http://127.0.0.1:7777'</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> data <span class="token operator">=</span> e<span class="token punctuation">.</span>data<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>data <span class="token operator">===</span> <span class="token string">'getData'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 根据接受到的数据，来进行下一步的操作</span>
+        <span class="token function">myAjax</span><span class="token punctuation">(</span><span class="token string">'/api/getdata'</span><span class="token punctuation">,</span> notice<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">function</span> <span class="token function">notice</span><span class="token punctuation">(</span><span class="token parameter">data</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 向后台请求到数据以后，在向父级推送消息</span>
+    top<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'http://127.0.0.1:7777'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>我个人认为这种方式就是一个事件的发布与监听，至少说可以无视同源策略。</p>
+<h2>6.cors</h2>
+<p>其实对于跨域资源的请求，浏览器已经把我们的请求发放给了服务器，浏览器也接受到了服务器的响应，只是浏览器一看我们2个的域不一样就把消息给拦截了，不给我们显示。所以我们如果我们在服务器就告诉浏览器我这个数据是每个源都可以获取就可以了。这就是CORS跨域资源共享。</p>
+<p>在后台代码中我以KOA列子</p>
+<pre><code class="language-javascript"><span class="token keyword">const</span> Koa <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'koa'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> router <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'koa-router'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 引入中间件</span>
+<span class="token keyword">const</span> cors <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'koa2-cors'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Koa</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 根据后台服务器的类型，打开跨域设置</span>
+<span class="token comment">// cors安全风险很高，所以，实际线上的配置肯定要比这个更加复杂，需要根据自己的需求来做</span>
+app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span><span class="token function">cors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+router<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'/api/getdata'</span><span class="token punctuation">,</span> <span class="token parameter">ctx</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  ctx<span class="token punctuation">.</span>body <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">code</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">msg</span><span class="token operator">:</span> <span class="token string">'我是配置有cors的服务器传输的数据'</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>router<span class="token punctuation">.</span><span class="token function">routes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> router<span class="token punctuation">.</span><span class="token function">allowedMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'配置有cors的服务器地址在：http://127.0.0.1:8889'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">8889</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>这样的话，任何源都可以通过AJAX发起请求来获取我们提供的数据。针对不同语言的服务器后端有不一样的处理方法，但是实质是一样的。</p>
+<p>配置了CORS的浏览器请求响应信息
+</p><div class="image-block"><img src="/loading.png" alt="配置了CORS的浏览器请求响应" class="image" data-src="https://ws1.sinaimg.cn/large/006A3ND3gy1fziv9hogvaj30ld0gignv.jpg"><p class="image-title">配置了CORS的浏览器请求响应</p></div>
+跨域请求响应信息
+<div class="image-block"><img src="/loading.png" alt="跨域请求响应信息" class="image" data-src="https://ws1.sinaimg.cn/large/006A3ND3gy1fziv9h9osej30on0dhmzc.jpg"><p class="image-title">跨域请求响应信息</p></div><p></p>
+<h2>7.NGINX</h2>
+<p>采用nginx做代理应该是目前跨域解决方案最好的一种。现在强调前后端分离，前端根据后端提供的接口进行数据的交互然后渲染页面。在前端三大框架的同时，开发过程中不需要我们针对跨域配置很多。在网页上线以后。我们经常采用nginx来加载静态的资源，我们把我们前端打包好的文件放到nginx的目录下面，让nginx来处理客服端的静态资源的请求。然后后端部署到另外一个端口号上面，当我们需要进行数据的交互的时候，通过nginx代理把后端数据代理到前端页面。这样的步骤是相较于传统的跨域是最简单也是最有效的一种方法，因为nginx又没有同源策略。不用考虑什么兼容性也不用考虑数据大小。我们在服务器(或者测试代码的时候在本地)安装nginx服务，然后找到我们nginx的配置文件，添加以下配置文件：</p>
+<pre><code>server {
+  # 把页面部署的端口
+  listen 8080;
+
+  # 静态页面存放的目录
+  root /var/www/html; 
+  index  index.html index.htm index.php;
+
+  # 只代理 /api 开头的接口，其他接口不代理
+  location /api/ {
+    # 需要代理的地址， 输入我们的后台api地址
+    proxy_pass http://127.0.0.1:8888;
+  }
+}
+</code></pre>
+<p>这样，我们可以代理不同url开头的请求到不同的后端进行处理，对以后服务器做负载均衡和反向代理也很简单。</p>
+<h2>8.nodejs</h2>
+<p>其实这种办法和上一种用nginx的方法是差不多的。都是你把请求发给一个中间人，由于中间人没有同源策略，他可以直接代理或者通过爬虫或者其他的手段得到想到的数据，然后返回(是不是和VPN的原理有点类似)。</p>
+<p>当然现在常见的就是用nodejs作为数据的中间件，同样，不同的语言有不同的方法，但是本质是一样的。我上次自己同构自己的博客页面，用<code>react</code>服务器端渲染，因为浏览器的同源策略，请求不到数据，然后就用了nodejs作为中间件来代理请求数据。</p>
+<p>部分代码：</p>
+<pre><code class="language-java">const Koa = require('koa');
+// 代理
+const Proxy = require('koa-proxy');
+// 对以前的异步函数进行转换
+const Convert = require('koa-convert');
+
+const app = new Koa();
+const server = require('koa-static');
+app.use(server(__dirname+"/www/",{ extensions: ['html']}));
+
+app.use(Convert(Proxy({
+  // 需要代理的接口地址
+  host: 'http://127.0.0.1:8888',
+  // 只代理/api/开头的url
+  match: /^\/api\//
+})));
+
+console.log('服务运行在:http://127.0.0.1:7777');
+app.listen(7777);
+</code></pre>
+<p>是不是和nginx很类似呀！！</p>
+<h2>9.webSocket</h2>
+<p>webSocket大家应该都有所耳闻，主要是为了客服端和服务端进行全双工的通信。但是这种通信是可以进行跨端口的。所以说我们可以用这个<code>漏洞</code>来进行跨域数据的交互。</p>
+<p>我个人认为，这种方法实质上和postMessage差不多，但是不是特别的常用吧！(仅仅个人看法)</p>
+<p>所以说我们可以很轻松的构建基于<code>webSocket</code>构建一个客服端和服务端。代码在github建议大家都多多去运行一下，了解清楚。这里就不贴了。</p>
+<h1>最后</h1>
+<p>哇！长长短短的写了5000多字终于写到最后了！！写总结真的比写代码还困难。</p>
+<p>个人觉得，第1种方法和第6种方法是以前常用的一种方法，毕竟以前基本上都是刀耕火种的前端时代。然后2,3,4种方法基本上现在很少有人会用，包括我没去详细了解之前也不会，但是里面有很多思想却值得我们去思考，比如第3种方法，反正我个人觉得很巧妙。第5，9种个人认为，这2种方法虽然可以解决跨域，但是把他们用在跨域有点<code>大材小用</code>了解就好。第7,8种方法，觉得应该是现在每个前端er都应该掌握的方法，应该以后解决跨域的主要方法。</p>
+<p>所有的代码都在github上面，地址在文章开头，我强烈建议都clone下来跑一边代码，最好是结合自己的理解把9种方法都去实现一下。</p>
+<p>由于我也是才了解跨域不久，本文有很多地方仅仅是我个人看法，欢迎大佬补充、勘误！</p>
+</article></main><footer class="text-center p-4"><p class="mb-2">All rights reserved 2022 licy's Home !!!</p><p><a href="https://beian.miit.gov.cn/" target="_blank"> ©蜀ICP备18023961号-2 </a></p></footer><!--]--></div>
+    
+  
+
+</body></html>

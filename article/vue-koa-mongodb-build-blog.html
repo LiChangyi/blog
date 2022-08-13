@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/lichangyi/blog@gh-pages/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="李昌义的个人博客">
+    <meta name="keywords" content="HTML, CSS, JavaScript, JS, TypeScript, TS, 前端">
+    <meta name="author" content="licy, 李昌义">
+    <title>vue+koa+mongodb 搭建个人博客 | Licy's Blog</title>
+    <script src="//at.alicdn.com/t/font_3007588_3jwt36rb1sb.js"></script>
+    <script type="module" crossorigin="" src="https://cdn.jsdelivr.net/gh/lichangyi/blog@gh-pages/assets/app.736fae21.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lichangyi/blog@gh-pages/assets/index.3a6cf2cf.css">
+  <meta name="description" content="vue+koa+mongodb 个人博客,阶段学习概括!"><meta name="head:count" content="1"></head>
+  <body>
+    <div id="app" data-server-rendered="true"><!--[--><header class="flex items-center px-6 justify-end" style="height:60px;"><nav><a href="/" class="nav-item mr-4">Home</a><a href="/about" class="nav-item">About</a></nav></header><main class="main"><h1 class="text-4xl text-white mb-2">vue+koa+mongodb 搭建个人博客</h1><div class="text-right">2018.09.06</div><article class="article"><h2>Begin</h2>
+<p>很久以来就特别想搭建一个blog，但是都是由于技术原因没有搭建起来。以前学习github的时候准备采用github与hexo来搭建。但是后来想了一下自己也在学习nodejs，何不用自己学的vue和nodejs来搭建，这样也起到了锻炼自己的目的，于是此博客由此而生。
+github: <a href="https://github.com/LiChangyi/blog" class="link" target="_blank" rel="noopener">https://github.com/LiChangyi/blog</a></p>
+<p>博客地址：<a href="https://blog.lcylove.cn" class="link" target="_blank" rel="noopener">blog.lcylove.cn</a></p>
+<h2>技术组成</h2>
+<ol>
+<li>前端 =&gt; vue,vuex,axios</li>
+<li>后台 =&gt; nodejs koa2</li>
+<li>数据库 =&gt; mongodb mongoose</li>
+<li>markdown =&gt; marked + highlight.js</li>
+<li>评论系统 =&gt; gitalk</li>
+<li>图片的储存 =&gt; 七牛云储存(前端构造接口，直接上传到七牛云上)</li>
+<li>服务器 =&gt; 腾讯云服务器(学生特惠10元/月) nginx</li>
+</ol>
+<h2>博客预览</h2>
+<p></p><div class="image-block"><img src="/loading.png" alt="博客预览1" class="image" data-src="https://ws1.sinaimg.cn/large/006A3ND3gy1fymvyp7n30j31ez0q57rs.jpg"><p class="image-title">博客预览1</p></div><p></p>
+<p></p><div class="image-block"><img src="/loading.png" alt="博客预览2" class="image" data-src="https://ws1.sinaimg.cn/large/006A3ND3gy1fymvyo2wnaj31ex0q515j.jpg"><p class="image-title">博客预览2</p></div><p></p>
+<p></p><div class="image-block"><img src="/loading.png" alt="博客预览3" class="image" data-src="https://ws1.sinaimg.cn/large/006A3ND3gy1fymvyn2k1oj31f70q3mz6.jpg"><p class="image-title">博客预览3</p></div><p></p>
+<p></p><div class="image-block"><img src="/loading.png" alt="博客预览4" class="image" data-src="https://ws1.sinaimg.cn/large/006A3ND3gy1fymvyn2h9wj31f90q375q.jpg"><p class="image-title">博客预览4</p></div><p></p>
+<p></p><div class="image-block"><img src="/loading.png" alt="博客预览5" class="image" data-src="https://ws1.sinaimg.cn/large/006A3ND3gy1fymvyn7xcoj31f60q4adz.jpg"><p class="image-title">博客预览5</p></div><p></p>
+<h2>待完成</h2>
+<ol>
+<li>因为单页应用seo一直是一个很大的问题，虽然本次我使用了网上提及的<strong>vue-meta-info</strong> 和 <strong>prerender-spa-plugin</strong> 预渲染的方式，但是发现SEO的问题依然存在，所以后期有时间会将前台界面用nuxtJS改写成ssr渲染。</li>
+<li>学习Typescript，并对代码进行重构。(因为感觉代码可读性不是特别的好)</li>
+</ol>
+<h2>写在后面的话</h2>
+<blockquote>
+<p>学习是一个持续的过程，我们应该一直持之以恒的学习下去。</p>
+<p>很多事有想法一定要去做，做了才有机会做完，做好。</p>
+</blockquote>
+<ol>
+<li>由于本人技术问题，代码肯定存在很多bug还未发现，其次就是第一次做vue+nodejs一个完整的项目，所以肯定有很多地方存在瑕疵，之所以发布出来一方面可以给需要这一方面东西的朋友一点启发，其次就是发现问题改进问题提升自己。</li>
+<li>因为整个博客要完整的从项目构建到项目上线的确比较繁琐，这里只是给想要试试nodejs与vue一个代码参考。如果是才学习vue以及nodejs的同学可能不需要这么多的东西，所以针对这一块，我后面会针对这一方面出一个vue+koa2+mongodb的一个完整的登录注册流程到项目部署，以及采用pm2进行进程守护，采用nginx来加载页面并使用代理的方式完成网页的正常运行。</li>
+</ol>
+</article></main><footer class="text-center p-4"><p class="mb-2">All rights reserved 2022 licy's Home !!!</p><p><a href="https://beian.miit.gov.cn/" target="_blank"> ©蜀ICP备18023961号-2 </a></p></footer><!--]--></div>
+    
+  
+
+</body></html>
