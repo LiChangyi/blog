@@ -1,16 +1,24 @@
 <template>
   <main>
-    <h1 class="text-4xl text-white mb-2">{{ article.title }}</h1>
-    <div class="text-right">{{ article.createAt }}</div>
+    <h1 class="text-4xl text-white mb-2">
+      {{ article.title }}
+    </h1>
+    <div class="text-right">
+      {{ article.createAt }}
+    </div>
+    <!-- eslint-disable vue/no-v-html -->
     <article class="article" v-html="article.content" />
   </main>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted } from 'vue';
-import { useHead } from '@vueuse/head';
 import './markdown.postcss';
+
+import { useHead } from '@vueuse/head';
+import { computed, onMounted, onUnmounted } from 'vue';
+
 import { SUFFIX_TITLE } from '@/common/constant';
+
 const props = defineProps<{
   article: Article;
 }>();
@@ -37,7 +45,7 @@ const setImageLazyLoad = () => {
           if (el.dataset.src) {
             el.src = el.dataset.src;
           }
-          observer && observer.unobserve(el);
+          observer?.unobserve(el);
         }
       });
     },
@@ -46,7 +54,7 @@ const setImageLazyLoad = () => {
     }
   );
   Array.from(imageEls).forEach((el) => {
-    observer && observer.observe(el);
+    observer?.observe(el);
   });
 };
 
@@ -55,6 +63,6 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  observer && observer.disconnect();
+  observer?.disconnect();
 });
 </script>

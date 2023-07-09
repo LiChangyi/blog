@@ -31,9 +31,11 @@
 </template>
 
 <script setup lang="ts">
-import { SUFFIX_TITLE } from '@/common/constant';
-import { useHead } from '@vueuse/head';
 import './index.postcss';
+
+import { useHead } from '@vueuse/head';
+
+import { SUFFIX_TITLE } from '@/common/constant';
 
 useHead({
   title: `About${SUFFIX_TITLE}`,

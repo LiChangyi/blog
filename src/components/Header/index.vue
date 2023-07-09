@@ -1,8 +1,8 @@
 <template>
   <header class="flex items-center px-6 justify-end" style="height: 60px">
     <nav>
-      <router-link class="nav-item mr-4" to="/">Home</router-link>
-      <router-link class="nav-item" to="/about">About</router-link>
+      <router-link class="nav-item mr-4" to="/"> Home </router-link>
+      <router-link class="nav-item" to="/about"> About </router-link>
     </nav>
   </header>
 </template>

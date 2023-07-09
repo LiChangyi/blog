@@ -11,9 +11,11 @@
 </template>
 
 <script setup lang="ts">
-import { SUFFIX_TITLE } from '@/common/constant';
 import { useHead } from '@vueuse/head';
 import allArticle from 'plugins:article/all';
+
+import { SUFFIX_TITLE } from '@/common/constant';
+
 import Item from './item.vue';
 
 useHead({

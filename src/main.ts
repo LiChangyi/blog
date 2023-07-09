@@ -1,9 +1,13 @@
-import { ViteSSG } from 'vite-ssg';
-import NProgress from 'nprogress';
-import { routes } from '@/routes';
-import App from './App.vue';
 import '@/assets/style/normalize.css';
 import '@/assets/style/index.postcss';
+
+import NProgress from 'nprogress';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ViteSSG } from 'vite-ssg';
+
+import { routes } from '@/routes';
+
+import App from './App.vue';
 
 export const createApp = ViteSSG(
   App,

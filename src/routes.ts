@@ -1,5 +1,5 @@
-import { RouteRecordRaw } from 'vue-router';
 import articleRoutes from 'plugins:article/get-routes';
+import { type RouteRecordRaw } from 'vue-router';
 
 export const routes: RouteRecordRaw[] = [
   {

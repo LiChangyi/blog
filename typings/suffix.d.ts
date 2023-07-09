@@ -9,7 +9,8 @@ declare module 'plugins:article/all' {
 }
 
 declare module 'plugins:article/get-routes' {
-  import { RouteRecordRaw } from 'vue-router';
+  import { type RouteRecordRaw } from 'vue-router';
+
   const content: RouteRecordRaw[];
   export default content;
 }
